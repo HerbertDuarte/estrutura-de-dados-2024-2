@@ -1,0 +1,4 @@
+package fila
+
+interface Enfileiravel {
+}

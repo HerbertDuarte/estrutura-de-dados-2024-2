@@ -1,0 +1,4 @@
+package pilha
+
+interface  Empilhavel {
+}
