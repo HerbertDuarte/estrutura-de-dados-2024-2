@@ -65,10 +65,10 @@ class AmontoavelMinima (private val tamanho:Int) : Amontoavel {
         return "$resultado]"
     }
 
-    fun trocar (index:Int, indexSubstituto: Int) {
-        val temp = dados[index]
-        dados[index] = dados[indexSubstituto]
-        dados[indexSubstituto] = temp
+    fun trocar (item1:Int, item2: Int) {
+        val temp = dados[item1]
+        dados[item1] = dados[item2]
+        dados[item2] = temp
     }
 
     fun indiceFilhoEsquerdo(indicePai: Int): Int {
@@ -84,10 +84,39 @@ class AmontoavelMinima (private val tamanho:Int) : Amontoavel {
     }
 
     fun ajustarAcima(posicao:Int){
-
+        val indicePai = indicePai(posicao)
+        val indiceFilho = posicao
+        val pai = dados[indicePai]
+        val filho = dados[posicao]
+        if(filho < pai){
+            trocar(indicePai, indiceFilho)
+            if (indicePai > 0){
+                ajustarAcima(indiceFilho)
+            }
+        }
     }
 
     fun ajustarAbaixo(posicao: Int){
+        val indiceFilhoDireito = indiceFilhoDireito(posicao)
+        val indiceFilhoEsquerdo = indiceFilhoEsquerdo(posicao)
+        val indicePai = posicao
 
+        val pai = dados[indicePai]
+        val filhoEsquerdo = dados[indiceFilhoEsquerdo]
+        val filhoDireito = dados[indiceFilhoDireito]
+
+        if(filhoDireito < pai){
+            trocar(indicePai, indiceFilhoDireito)
+            if (indiceFilhoDireito < ponteiroFim){
+                ajustarAbaixo(indicePai)
+            }
+        }
+
+        if(filhoEsquerdo < pai){
+            trocar(indicePai, indiceFilhoEsquerdo)
+            if (indiceFilhoEsquerdo < ponteiroFim){
+                ajustarAcima(indicePai)
+            }
+        }
     }
 }
