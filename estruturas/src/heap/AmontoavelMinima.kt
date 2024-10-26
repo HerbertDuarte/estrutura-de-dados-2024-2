@@ -1,15 +1,17 @@
 package heap
 
+import jdk.jfr.internal.handlers.EventHandler
+
 class AmontoavelMinima (private val tamanho:Int) : Amontoavel {
 
     private var ponteiroFim: Int = -1
     private val dados = LongArray(tamanho)
 
     override fun inserir(dado: Long) {
-
+        val dadoTratado = dado + (1 / EventHandler.timestamp())
         if(!estaCheia()){
             ponteiroFim++
-            dados[ponteiroFim] = dado
+            dados[ponteiroFim] = dadoTratado
             ajustarAcima(ponteiroFim)
         }
 
@@ -105,18 +107,19 @@ class AmontoavelMinima (private val tamanho:Int) : Amontoavel {
         val filhoEsquerdo = dados[indiceFilhoEsquerdo]
         val filhoDireito = dados[indiceFilhoDireito]
 
-        if(filhoDireito < pai){
+        if(filhoDireito < pai || filhoEsquerdo < pai){
+            val indiceMenorFilho = indiceDoMenor(indiceFilhoEsquerdo, indiceFilhoDireito)
             trocar(indicePai, indiceFilhoDireito)
             if (indiceFilhoDireito < ponteiroFim){
-                ajustarAbaixo(indicePai)
+                ajustarAbaixo(indiceMenorFilho)
             }
         }
+    }
 
-        if(filhoEsquerdo < pai){
-            trocar(indicePai, indiceFilhoEsquerdo)
-            if (indiceFilhoEsquerdo < ponteiroFim){
-                ajustarAcima(indicePai)
-            }
+    private fun indiceDoMenor(indice1:Int, indice2:Int):Int {
+        if (dados[indice1] < dados[indice2]) {
+            return indice1
         }
+        return indice2
     }
 }
