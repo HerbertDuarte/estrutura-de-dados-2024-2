@@ -1,14 +1,12 @@
 package heap
 
-import jdk.jfr.internal.handlers.EventHandler
-
 class AmontoavelMinima (private val tamanho:Int) : Amontoavel {
 
     private var ponteiroFim: Int = -1
     private val dados = LongArray(tamanho)
 
     override fun inserir(dado: Long) {
-        val dadoTratado = dado + (1 / EventHandler.timestamp())
+        val dadoTratado = dado
         if(!estaCheia()){
             ponteiroFim++
             dados[ponteiroFim] = dadoTratado
